@@ -8,7 +8,7 @@ var gulp = require('gulp');
 
 gulp.task('lint', () => {
   return gulp.src([
-    './**/*.js',
+    '**/*.js',
     '!**/node_modules/**',
   ])
     .pipe(eslint())
