@@ -1,0 +1,11 @@
+{
+  "name": "iot-hub-node-raspberrypi-getting-started",
+  "version": "1.0.0",
+  "description": "Node.js sample codes for getting started with Azure IoT Hub on Raspberry Pi",
+  "main": "gulpfile.js",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1"
+  }
+}
