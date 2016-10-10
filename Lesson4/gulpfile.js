@@ -29,14 +29,13 @@ function initTasks(gulp) {
     var MaxMessageNumber = 20;
 
     var sendMessage = function () {
+      sentMessageCount++;
       message.messageId = sentMessageCount.toString();
+      console.log('[IoT Hub] Sending message #' + message.messageId + ': ' + message.getData());
       client.send(targetDevice, message, function (err) {
         if (err) {
-          console.error('[IoT Hub] Send message error: ' + err.message);
-        } else {
-          console.log('[IoT Hub] Message sent: Id: ' + sentMessageCount.toString());
+          console.error('[IoT Hub] Sending message error: ' + err.message);
         }
-        sentMessageCount++;
         if (sentMessageCount < MaxMessageNumber) {
           setTimeout(sendMessage, 2000);
         } else if (sentMessageCount == MaxMessageNumber) {
@@ -49,14 +48,18 @@ function initTasks(gulp) {
     };
 
     var closeConnectionCallback = function (err) {
-      if (err) console.error('[IoT Hub] Close connection error: ' + err.message);
+      if (err) {
+        console.error('[IoT Hub] Close connection error: ' + err.message + '\n');
+      } else {
+        console.error('[IoT Hub] Connection closed\n');
+      }
     };
 
     client.open(function (err) {
       if (err) {
-        console.error('[IoT Hub] Fail to connect: ' + err.message);
+        console.error('[IoT Hub] Fail to connect: ' + err.message + '\n');
       } else {
-        console.error('[IoT Hub] Client connected');
+        console.log('[IoT Hub] Client connected\n');
         sendMessage();
       }
     });

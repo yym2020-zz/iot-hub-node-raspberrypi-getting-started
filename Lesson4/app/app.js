@@ -32,16 +32,16 @@ function completeMessageCallback(err) {
 
 function closeConnectionCallback(err) {
   if (err) {
-    console.error('[Device] Close connection error: ' + err.message);
+    console.error('[Device] Close connection error: ' + err.message + '\n');
     return;
   }
-  console.log('[Device] Connection closed');
+  console.log('[Device] Connection closed\n');
 }
 
 function receiveMessageAndBlink() {
   client.on('message', function (msg) {
     var msgBody = msg.getData().toString('utf-8');
-    console.log('[Device] Receive message: Id: ' + msg.messageId + ' Body: ' + msgBody);
+    console.log('[Device] Received message #' + msg.messageId + ': ' + msgBody + '\n');
     switch (msgBody) {
       case 'stop':
         closeConnectionOnMessageCompleted = true;
@@ -57,9 +57,9 @@ function receiveMessageAndBlink() {
 
 function connectCallback(err) {
   if (err) {
-    console.log('[Device] Could not connect: ' + err);
+    console.log('[Device] Could not connect: ' + err + '\n');
   } else {
-    console.log('[Device] Client connected');
+    console.log('[Device] Client connected\n');
     receiveMessageAndBlink();
   }
 }
