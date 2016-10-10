@@ -23,7 +23,7 @@ function initTasks(gulp) {
       return dict.DeviceId;
     };
     var targetDevice = getDeviceId(config.iot_device_connection_string);
-    var message = new Message('blink');
+    var message = new Message(JSON.stringify({ command: 'blink' }));
 
     var sentMessageCount = 0;
     var MaxMessageNumber = 20;
@@ -39,7 +39,7 @@ function initTasks(gulp) {
         if (sentMessageCount < MaxMessageNumber) {
           setTimeout(sendMessage, 2000);
         } else if (sentMessageCount == MaxMessageNumber) {
-          message = new Message('stop');
+          message = new Message(JSON.stringify({ command: 'stop' }));
           setTimeout(sendMessage, 1000);
         } else {
           client.close(closeConnectionCallback);

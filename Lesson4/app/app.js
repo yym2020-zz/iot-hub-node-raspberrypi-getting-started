@@ -40,9 +40,10 @@ function closeConnectionCallback(err) {
 
 function receiveMessageAndBlink() {
   client.on('message', function (msg) {
-    var msgBody = msg.getData().toString('utf-8');
-    console.log('[Device] Received message #' + msg.messageId + ': ' + msgBody + '\n');
-    switch (msgBody) {
+    var msgBodyString = msg.getData().toString('utf-8');
+    var msgBody = JSON.parse(msgBodyString);
+    console.log('[Device] Received message #' + msg.messageId + ': ' + msgBodyString + '\n');
+    switch (msgBody.command) {
       case 'stop':
         closeConnectionOnMessageCompleted = true;
         break;
