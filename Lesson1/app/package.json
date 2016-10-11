@@ -1,0 +1,11 @@
+{
+  "name": "raspberrypi-nodejs-lesson-1",
+  "version": "1.0.0",
+  "description": "A sample Node.js app that blinks the LED connected to Raspberry Pi",
+  "main": "app.js",
+  "author": "Microsoft Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "wiring-pi": ">=2.1.1"
+  }
+}

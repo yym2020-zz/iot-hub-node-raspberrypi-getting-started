@@ -1,0 +1,11 @@
+{
+  "name": "gulp-tasks",
+  "version": "1.0.0",
+  "description": "Gulp tasks supporting sample deployment",
+  "main": "gulpfile.js",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-common": "Azure/gulp-common.git#v0.9.12"
+  }
+}

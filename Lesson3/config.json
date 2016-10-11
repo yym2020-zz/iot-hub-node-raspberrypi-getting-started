@@ -2,9 +2,11 @@
   "device_host_name_or_ip_address": "[device hostname or IP adress]",
   "device_user_name": "pi",
   "device_password": "raspberry",
+  "resource_group": "[resource group of your Azure Storage]",
   "iot_hub_connection_string": "[IoT hub connection string]",
   "iot_device_connection_string": "[IoT device connection string]",
-  "project_folder": "./node-pi-lesson-4",
+  "iot_hub_consumer_group_name": "cg1",
+  "project_folder": "./node-pi-lesson-3",
   "start_file": "app.js",
   "ssh_port": 22
 }
