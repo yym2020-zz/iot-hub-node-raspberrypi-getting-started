@@ -20,12 +20,12 @@ function blinkLED() {
   }, 100);
 }
 
-var closeConnectionOnMessageCompleted = false;
+var stopReceivingMessage = false;
 function completeMessageCallback(err) {
   if (err) {
     console.log('[Device] Complete message error: ' + err.toString());
   }
-  if (closeConnectionOnMessageCompleted) {
+  if (stopReceivingMessage) {
     client.close(closeConnectionCallback);
   }
 }
@@ -38,22 +38,20 @@ function closeConnectionCallback(err) {
   console.log('[Device] Connection closed\n');
 }
 
-function receiveMessageAndBlink() {
-  client.on('message', function (msg) {
-    var msgBodyString = msg.getData().toString('utf-8');
-    var msgBody = JSON.parse(msgBodyString);
-    console.log('[Device] Received message #' + msg.messageId + ': ' + msgBodyString + '\n');
-    switch (msgBody.command) {
-      case 'stop':
-        closeConnectionOnMessageCompleted = true;
-        break;
-      case 'blink':
-      default:
-        blinkLED();
-        break;
-    }
-    client.complete(msg, completeMessageCallback);
-  });
+function receiveMessageCallback(msg) {
+  var msgBodyString = msg.getData().toString('utf-8');
+  var msgBody = JSON.parse(msgBodyString);
+  console.log('[Device] Received message: ' + msgBodyString + '\n');
+  switch (msgBody.command) {
+    case 'stop':
+      stopReceivingMessage = true;
+      break;
+    case 'blink':
+    default:
+      blinkLED();
+      break;
+  }
+  client.complete(msg, completeMessageCallback);
 }
 
 function connectCallback(err) {
@@ -61,7 +59,7 @@ function connectCallback(err) {
     console.log('[Device] Could not connect: ' + err + '\n');
   } else {
     console.log('[Device] Client connected\n');
-    receiveMessageAndBlink();
+    client.on('message', receiveMessageCallback);
   }
 }
 

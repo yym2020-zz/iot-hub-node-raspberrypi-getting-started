@@ -23,28 +23,33 @@ function initTasks(gulp) {
       return dict.DeviceId;
     };
     var targetDevice = getDeviceId(config.iot_device_connection_string);
-    var message = new Message(JSON.stringify({ command: 'blink' }));
+    var commandMessage = {
+      command: 'blink'
+    };
 
     var sentMessageCount = 0;
     var MaxMessageNumber = 20;
 
+    var sendMessageCallback = function (err) {
+      if (err) {
+        console.error('[IoT Hub] Sending message error: ' + err.message);
+      }
+      if (sentMessageCount < MaxMessageNumber) {
+        setTimeout(sendMessage, 2000);
+      } else if (sentMessageCount == MaxMessageNumber) {
+        commandMessage.command = 'stop';
+        setTimeout(sendMessage, 2000);
+      } else {
+        client.close(closeConnectionCallback);
+      }
+    };
+
     var sendMessage = function () {
       sentMessageCount++;
-      message.messageId = sentMessageCount.toString();
-      console.log('[IoT Hub] Sending message #' + message.messageId + ': ' + message.getData());
-      client.send(targetDevice, message, function (err) {
-        if (err) {
-          console.error('[IoT Hub] Sending message error: ' + err.message);
-        }
-        if (sentMessageCount < MaxMessageNumber) {
-          setTimeout(sendMessage, 2000);
-        } else if (sentMessageCount == MaxMessageNumber) {
-          message = new Message(JSON.stringify({ command: 'stop' }));
-          setTimeout(sendMessage, 1000);
-        } else {
-          client.close(closeConnectionCallback);
-        }
-      });
+      commandMessage.messageId = sentMessageCount;
+      var message = new Message(JSON.stringify(commandMessage));
+      console.log('[IoT Hub] Sending message #' + sentMessageCount + ': ' + message.getData());
+      client.send(targetDevice, message, sendMessageCallback);
     };
 
     var closeConnectionCallback = function (err) {
@@ -55,14 +60,17 @@ function initTasks(gulp) {
       }
     };
 
-    client.open(function (err) {
+    var connectCallback = function (err) {
       if (err) {
         console.error('[IoT Hub] Fail to connect: ' + err.message + '\n');
       } else {
         console.log('[IoT Hub] Client connected\n');
-        sendMessage();
+        // Wait for 5 seconds so that Device gets connected to IoT Hub.
+        setTimeout(sendMessage, 5000);
       }
-    });
+    };
+
+    client.open(connectCallback);
   });
 
   gulp.task('run', 'Runs deployed sample on the board', ['run-internal', 'send-cloud-to-device-messages']);
