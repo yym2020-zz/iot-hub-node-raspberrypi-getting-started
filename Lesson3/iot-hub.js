@@ -4,11 +4,9 @@
 'use strict';
 
 var EventHubClient = require('azure-event-hubs').Client;
-var config = require('./config.json');
-
 var iotHubClient;
 
-var readIoTHub = function () {
+var readIoTHub = function (config) {
   // Listen device-to-cloud messages
   var printError = function (err) {
     console.log(err.message);

@@ -5,11 +5,9 @@
 
 var moment = require('moment');
 var storage = require('azure-storage');
-var config = require('./config.json');
-
 var stopReadAzureTable = false;
 
-var readAzureTable = function () {
+var readAzureTable = function (config) {
   var tableService = storage.createTableService(config.azure_storage_connection_string);
   var condition = 'PartitionKey eq ? and RowKey gt ? ';
   var tableName = 'DeviceData';

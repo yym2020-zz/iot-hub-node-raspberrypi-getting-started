@@ -10,10 +10,26 @@ var doesReadStorage = args['read-storage'];
 var receiveMessages = doesReadStorage ? require('./azure-table.js').readAzureTable : require('./iot-hub.js').readIoTHub;
 var cleanup = doesReadStorage ? require('./azure-table.js').cleanup : require('./iot-hub.js').cleanup;
 
+var expandTilde = require('expand-tilde');
+
+function initConfig() {
+  var settingFileAbsolutePath = expandTilde(require('../config.json').settingFilePath);
+  try {
+    var sharedSettings = require(settingFileAbsolutePath);
+  } catch (err) {
+    console.error('Fail to read settings from ' + settingFileAbsolutePath);
+    console.error('You need to run `gulp init` in parent folder before running sample.');
+    process.exit(1);
+  }
+  var config = require('./config.json');
+  return Object.assign(sharedSettings, config);
+}
+
 function initTasks(gulp) {
   var runSequence = require('run-sequence').use(gulp);
+  var config = initConfig();
 
-  require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-3' });
+  require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-3', config: config });
 
   gulp.task('cleanup', false, cleanup);
 
@@ -22,10 +38,10 @@ function initTasks(gulp) {
   })
 
   if (doesReadStorage) {
-    gulp.task('query-table-storage', false, receiveMessages);
+    gulp.task('query-table-storage', false, () => { receiveMessages(config); });
     gulp.task('run', 'Runs deployed sample on the board', ['query-table-storage', 'send-device-to-cloud-messages']);
   } else {
-    gulp.task('query-iot-hub-messages', false, receiveMessages);
+    gulp.task('query-iot-hub-messages', false, () => { receiveMessages(config); });
     gulp.task('run', 'Runs deployed sample on the board', ['query-iot-hub-messages', 'send-device-to-cloud-messages']);
   }
 }

@@ -25,7 +25,7 @@ gulp.task('init', () => {
   try {
     require(settingFileAbsolutePath);
     console.log('Setting file detected at: ' + settingFileAbsolutePath);
-  } catch(err) {
+  } catch (err) {
     if (err instanceof SyntaxError) {
       console.log('Setting file (' + settingFileAbsolutePath + ') is either empty or containing invalid content.');
       console.log('Use default template to overwrite it.');

@@ -4,12 +4,27 @@
 'use strict';
 
 var gulp = require('gulp');
+var expandTilde = require('expand-tilde');
+
+function initConfig() {
+  var settingFileAbsolutePath = expandTilde(require('../config.json').settingFilePath);
+  try {
+    var sharedSettings = require(settingFileAbsolutePath);
+  } catch (err) {
+    console.error('Fail to read settings from ' + settingFileAbsolutePath);
+    console.error('You need to run `gulp init` in parent folder before running sample.');
+    process.exit(1);
+  }
+  var config = require('./config.json');
+  return Object.assign(sharedSettings, config);
+}
 
 function initTasks(gulp) {
-  require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-4' });
+  var config = initConfig();
+
+  require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-4', config: config });
 
   gulp.task('send-cloud-to-device-messages', false, function () {
-    var config = require("./config.json");
     var Message = require('azure-iot-common').Message;
     var client = require('azure-iothub').Client.fromConnectionString(config.iot_hub_connection_string);
 

@@ -4,7 +4,6 @@
 'use strict';
 
 var wpi = require('wiring-pi');
-var config = require('./config.json');
 var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConnectionString;
 
 // GPIO pin of the LED
@@ -63,5 +62,7 @@ function connectCallback(err) {
   }
 }
 
-var client = clientFromConnectionString(config.iot_device_connection_string);
+// Read device connection string from command line arguments
+var iot_device_connection_string = process.argv[2];
+var client = clientFromConnectionString(iot_device_connection_string);
 client.open(connectCallback);
