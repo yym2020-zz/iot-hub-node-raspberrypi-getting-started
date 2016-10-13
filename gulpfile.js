@@ -13,6 +13,7 @@ gulp.task('init', () => {
   var settingTemplate = {
     device_host_name_or_ip_address: '[device hostname or IP adress]',
     device_user_name: 'pi',
+    device_password: 'raspberry',
     iot_hub_connection_string: '[IoT hub connection string]',
     iot_device_connection_string: '[IoT device connection string]',
     azure_storage_connection_string: "[Azure storage connection string]",
