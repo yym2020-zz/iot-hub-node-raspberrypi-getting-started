@@ -3,10 +3,9 @@
 */
 'use strict';
 
-var expandTilde = require('expand-tilde');
-
+// Consolidate config values from both config.json and the config file under user home folder
 function initConfig() {
-  var settingFileAbsolutePath = expandTilde(require('../config.json').settingFilePath);
+  var settingFileAbsolutePath = require('expand-tilde')(require('../config.json').settingFilePath);
   try {
     var sharedSettings = require(settingFileAbsolutePath);
   } catch (err) {
@@ -18,4 +17,5 @@ function initConfig() {
   return Object.assign(sharedSettings, config);
 }
 
+// Setup gulp tasks for running this sample
 require('gulp-common')(require('gulp'), 'raspberrypi-node', { appName: 'lesson-1', config: initConfig() });

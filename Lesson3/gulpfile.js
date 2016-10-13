@@ -10,10 +10,9 @@ var doesReadStorage = args['read-storage'];
 var receiveMessages = doesReadStorage ? require('./azure-table.js').readAzureTable : require('./iot-hub.js').readIoTHub;
 var cleanup = doesReadStorage ? require('./azure-table.js').cleanup : require('./iot-hub.js').cleanup;
 
-var expandTilde = require('expand-tilde');
-
+// Consolidate config values from both config.json and the config file under user home folder
 function initConfig() {
-  var settingFileAbsolutePath = expandTilde(require('../config.json').settingFilePath);
+  var settingFileAbsolutePath = require('expand-tilde')(require('../config.json').settingFilePath);
   try {
     var sharedSettings = require(settingFileAbsolutePath);
   } catch (err) {
@@ -25,6 +24,7 @@ function initConfig() {
   return Object.assign(sharedSettings, config);
 }
 
+// Setup gulp tasks for running this sample
 function initTasks(gulp) {
   var runSequence = require('run-sequence').use(gulp);
   var config = initConfig();

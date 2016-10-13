@@ -4,10 +4,10 @@
 'use strict';
 
 var gulp = require('gulp');
-var expandTilde = require('expand-tilde');
 
+// Consolidate config values from both config.json and the config file under user home folder
 function initConfig() {
-  var settingFileAbsolutePath = expandTilde(require('../config.json').settingFilePath);
+  var settingFileAbsolutePath = require('expand-tilde')(require('../config.json').settingFilePath);
   try {
     var sharedSettings = require(settingFileAbsolutePath);
   } catch (err) {
@@ -19,7 +19,14 @@ function initConfig() {
   return Object.assign(sharedSettings, config);
 }
 
+// Setup gulp tasks for running this sample
 function initTasks(gulp) {
+  // Blink interval in ms
+  var INTERVAL = 2000;
+  // Total blink times
+  var MAX_BLINK_TIMES = 20;
+  var sentMessageCount = 0;
+
   var config = initConfig();
 
   require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-4', config: config });
@@ -27,7 +34,27 @@ function initTasks(gulp) {
   gulp.task('send-cloud-to-device-messages', false, function () {
     var Message = require('azure-iot-common').Message;
     var client = require('azure-iothub').Client.fromConnectionString(config.iot_hub_connection_string);
+    var commandMessage = {
+      command: 'blink'
+    };
 
+    // Send new message once previous message is sent out
+    var sendMessageCallback = function (err) {
+      if (err) {
+        console.error('[IoT Hub] Sending message error: ' + err.message);
+      }
+      if (sentMessageCount < MAX_BLINK_TIMES) {
+        setTimeout(sendMessage, INTERVAL);
+      } else if (sentMessageCount == MAX_BLINK_TIMES) {
+        // Use the last message to instruct the device app to stop receiving messages
+        commandMessage.command = 'stop';
+        setTimeout(sendMessage, INTERVAL);
+      } else {
+        client.close(closeConnectionCallback);
+      }
+    };
+
+    // Get device id from IoT device connection string
     var getDeviceId = function (connectionString) {
       var elements = connectionString.split(';');
       var dict = {};
@@ -38,27 +65,6 @@ function initTasks(gulp) {
       return dict.DeviceId;
     };
     var targetDevice = getDeviceId(config.iot_device_connection_string);
-    var commandMessage = {
-      command: 'blink'
-    };
-
-    var sentMessageCount = 0;
-    var MaxMessageNumber = 20;
-
-    var sendMessageCallback = function (err) {
-      if (err) {
-        console.error('[IoT Hub] Sending message error: ' + err.message);
-      }
-      if (sentMessageCount < MaxMessageNumber) {
-        setTimeout(sendMessage, 2000);
-      } else if (sentMessageCount == MaxMessageNumber) {
-        commandMessage.command = 'stop';
-        setTimeout(sendMessage, 2000);
-      } else {
-        client.close(closeConnectionCallback);
-      }
-    };
-
     var sendMessage = function () {
       sentMessageCount++;
       commandMessage.messageId = sentMessageCount;

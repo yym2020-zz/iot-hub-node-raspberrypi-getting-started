@@ -7,13 +7,15 @@ var wpi = require('wiring-pi');
 var Message = require('azure-iot-device').Message;
 var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConnectionString;
 
+// Get device id from IoT device connection string
 function getDeviceId(connectionString) {
   var elements = connectionString.split(';');
+  var dict = {};
   for (var i = 0; i < elements.length; i++) {
-    if (elements[i].startsWith('DeviceId=')) {
-      return elements[i].slice(9);
-    }
+    var kvp = elements[i].split('=');
+    dict[kvp[0]] = kvp[1];
   }
+  return dict.DeviceId;
 }
 
 // Read device connection string from command line arguments
@@ -22,9 +24,11 @@ var deviceId = getDeviceId(iot_device_connection_string);
 
 // GPIO pin of the LED
 var CONFIG_PIN = 7;
-
+// Blink interval in ms
+var INTERVAL = 2000;
+// Total blink times
 var MAX_BLINK_TIMES = 20;
-var totalBlinkTimes = 1;
+var sentMessageCount = 0;
 
 wpi.setup('wpi');
 wpi.pinMode(CONFIG_PIN, wpi.OUTPUT);
@@ -34,11 +38,13 @@ function connectCallback(err) {
     console.log('[Device] Could not connect: ' + err);
   } else {
     console.log('[Device] Client connected\n');
-    sendMessage();
+    // Wait for 5 seconds so that host machine gets connected to IoT Hub for receiving message.
+    setTimeout(sendMessage, 5000);
   }
 }
 
 function blinkLED() {
+  // Light up LED for 100 ms
   wpi.digitalWrite(CONFIG_PIN, 1);
   setTimeout(function () {
     wpi.digitalWrite(CONFIG_PIN, 0);
@@ -46,8 +52,9 @@ function blinkLED() {
 }
 
 function sendMessage() {
-  var message = new Message(JSON.stringify({ deviceId: deviceId, messageId: totalBlinkTimes }));
-  console.log("[Device] Sending message #" + totalBlinkTimes + ": " + message.getData());
+  sentMessageCount++;
+  var message = new Message(JSON.stringify({ deviceId: deviceId, messageId: sentMessageCount }));
+  console.log("[Device] Sending message #" + sentMessageCount + ": " + message.getData());
   client.sendEvent(message, sendMessageCallback);
 }
 
@@ -60,11 +67,9 @@ function sendMessageCallback(err) {
   // Blink once after successfully sending one message.
   blinkLED();
 
-  if (totalBlinkTimes < MAX_BLINK_TIMES) {
-    totalBlinkTimes++;
-    setTimeout(sendMessage, 2000);
-  }
-  else {
+  if (sentMessageCount < MAX_BLINK_TIMES) {
+    setTimeout(sendMessage, INTERVAL);
+  } else {
     // Wait 5 more seconds to exit so that Azure function has the chance to process sent messages.
     setTimeout(function () {
       process.exit();

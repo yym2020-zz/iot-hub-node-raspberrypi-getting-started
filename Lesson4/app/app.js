@@ -13,6 +13,7 @@ wpi.setup('wpi');
 wpi.pinMode(CONFIG_PIN, wpi.OUTPUT);
 
 function blinkLED() {
+  // Light up LED for 100 ms
   wpi.digitalWrite(CONFIG_PIN, 1);
   setTimeout(function () {
     wpi.digitalWrite(CONFIG_PIN, 0);
