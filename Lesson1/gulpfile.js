@@ -3,19 +3,14 @@
 */
 'use strict';
 
-// Consolidate config values from both config.json and the config file under user home folder
-function initConfig() {
-  var settingFileAbsolutePath = require('expand-tilde')(require('../config.json').settingFilePath);
-  try {
-    var sharedSettings = require(settingFileAbsolutePath);
-  } catch (err) {
-    console.error('Fail to read settings from ' + settingFileAbsolutePath);
-    console.error('You need to run `gulp init` in parent folder before running sample.');
-    process.exit(1);
-  }
-  var config = require('./config.json');
-  return Object.assign(sharedSettings, config);
-}
+var gulp = require('gulp-common')(require('gulp'), 'raspberrypi-node', {
+  appName: 'lesson-1',
+  config_template: {
 
-// Setup gulp tasks for running this sample
-require('gulp-common')(require('gulp'), 'raspberrypi-node', { appName: 'lesson-1', config: initConfig() });
+    "device_host_name_or_ip_address": "[device hostname or IP adress]",
+    "device_user_name": "pi",
+    "device_password": "raspberry"
+  
+  },
+  config_postfix: "raspberrypi"
+});

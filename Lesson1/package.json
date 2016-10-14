@@ -7,6 +7,6 @@
   "devDependencies": {
     "expand-tilde": "^1.2.2",
     "gulp": "^3.9.1",
-    "gulp-common": "Azure/gulp-common.git#v0.9.15"
+    "gulp-common": "Azure/gulp-common.git#v0.9.17"
   }
 }

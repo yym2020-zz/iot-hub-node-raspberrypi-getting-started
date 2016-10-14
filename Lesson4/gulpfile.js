@@ -5,31 +5,27 @@
 
 var gulp = require('gulp');
 
-// Consolidate config values from both config.json and the config file under user home folder
-function initConfig() {
-  var settingFileAbsolutePath = require('expand-tilde')(require('../config.json').settingFilePath);
-  try {
-    var sharedSettings = require(settingFileAbsolutePath);
-  } catch (err) {
-    console.error('Fail to read settings from ' + settingFileAbsolutePath);
-    console.error('You need to run `gulp init` in parent folder before running sample.');
-    process.exit(1);
-  }
-  var config = require('./config.json');
-  return Object.assign(sharedSettings, config);
-}
-
-// Setup gulp tasks for running this sample
 function initTasks(gulp) {
+
   // Blink interval in ms
   var INTERVAL = 2000;
   // Total blink times
   var MAX_BLINK_TIMES = 20;
   var sentMessageCount = 0;
 
-  var config = initConfig();
+  require('gulp-common')(gulp, 'raspberrypi-node', {
+    appName: 'lesson-4',
+    config_template: {
+      "device_host_name_or_ip_address": "[device hostname or IP adress]",
+      "device_user_name": "pi",
+      "device_password": "raspberry",
+      "iot_hub_connection_string": "[IoT hub connection string]",
+      "iot_device_connection_string": "[IoT device connection string]"
+    },
+    config_postfix: 'raspberrypi' 
+  });
 
-  require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-4', config: config });
+  var config = gulp.config;
 
   gulp.task('send-cloud-to-device-messages', false, function () {
     var Message = require('azure-iot-common').Message;

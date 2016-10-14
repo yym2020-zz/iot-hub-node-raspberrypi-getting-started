@@ -10,27 +10,24 @@ var doesReadStorage = args['read-storage'];
 var receiveMessages = doesReadStorage ? require('./azure-table.js').readAzureTable : require('./iot-hub.js').readIoTHub;
 var cleanup = doesReadStorage ? require('./azure-table.js').cleanup : require('./iot-hub.js').cleanup;
 
-// Consolidate config values from both config.json and the config file under user home folder
-function initConfig() {
-  var settingFileAbsolutePath = require('expand-tilde')(require('../config.json').settingFilePath);
-  try {
-    var sharedSettings = require(settingFileAbsolutePath);
-  } catch (err) {
-    console.error('Fail to read settings from ' + settingFileAbsolutePath);
-    console.error('You need to run `gulp init` in parent folder before running sample.');
-    process.exit(1);
-  }
-  var config = require('./config.json');
-  return Object.assign(sharedSettings, config);
-}
-
-// Setup gulp tasks for running this sample
 function initTasks(gulp) {
   var runSequence = require('run-sequence').use(gulp);
-  var config = initConfig();
 
-  require('gulp-common')(gulp, 'raspberrypi-node', { appName: 'lesson-3', config: config });
+  require('gulp-common')(gulp, 'raspberrypi-node', {
+    appName: 'lesson-3',
+    config_template: {
+      "device_host_name_or_ip_address": "[device hostname or IP adress]",
+      "device_user_name": "pi",
+      "device_password": "raspberry",
+      "iot_hub_connection_string": "[IoT hub connection string]",
+      "iot_device_connection_string": "[IoT device connection string]",
+      "azure_storage_connection_string": "[Azure storage connection string]",
+      "iot_hub_consumer_group_name": "cg1"
+    },
+    config_postfix: 'raspberrypi' 
+  });
 
+  var config = gulp.config;
   gulp.task('cleanup', false, cleanup);
 
   gulp.task('send-device-to-cloud-messages', false, function () {
