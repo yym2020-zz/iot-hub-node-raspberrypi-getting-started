@@ -20,8 +20,8 @@ function getDeviceId(connectionString) {
 }
 
 // Read device connection string from command line arguments
-var iot_device_connection_string = process.argv[2];
-var deviceId = getDeviceId(iot_device_connection_string);
+var iotDeviceConnectionString = process.argv[2];
+var deviceId = getDeviceId(iotDeviceConnectionString);
 
 // GPIO pin of the LED
 var CONFIG_PIN = 7;
@@ -95,5 +95,5 @@ function sendMessageCallback(err) {
 }
 
 // Construct IoT Hub device client and connect to IoT Hub.
-var client = clientFromConnectionString(iot_device_connection_string);
+var client = clientFromConnectionString(iotDeviceConnectionString);
 client.open(connectCallback);

@@ -9,6 +9,6 @@
     "azure-iothub": "^1.0.17",
     "expand-tilde": "^1.2.2",
     "gulp": "^3.9.1",
-    "gulp-common": "Azure/gulp-common.git#v0.9.17"
+    "gulp-common": "Azure/gulp-common.git#v0.9.18"
   }
 }

@@ -25,6 +25,13 @@
       {
         "SwitchCase": 1
       }
+    ],
+    "no-trailing-spaces": "error",
+    "camelcase": [
+      "error",
+      {
+        "properties": "always"
+      }
     ]
   }
 }

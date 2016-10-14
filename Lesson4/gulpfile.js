@@ -18,14 +18,14 @@ function initTasks(gulp) {
    */
   require('gulp-common')(gulp, 'raspberrypi-node', {
     appName: 'lesson-4',
-    config_template: {
+    configTemplate: {
       "device_host_name_or_ip_address": "[device hostname or IP adress]",
       "device_user_name": "pi",
       "device_password": "raspberry",
       "iot_hub_connection_string": "[IoT hub connection string]",
       "iot_device_connection_string": "[IoT device connection string]"
     },
-    config_postfix: 'raspberrypi'
+    configPostfix: 'raspberrypi'
   });
 
   var config = gulp.config;
@@ -87,7 +87,7 @@ function initTasks(gulp) {
       if (err) {
         console.error('[IoT Hub] Close connection error: ' + err.message + '\n');
       } else {
-        console.error('[IoT Hub] Connection closed\n');
+        console.log('[IoT Hub] Connection closed\n');
       }
     };
 
@@ -107,7 +107,7 @@ function initTasks(gulp) {
   });
 
   /**
-   * Override 'run' task with customized behavior 
+   * Override 'run' task with customized behavior
    */
   gulp.task('run', 'Runs deployed sample on the board', ['run-internal', 'send-cloud-to-device-messages']);
 }

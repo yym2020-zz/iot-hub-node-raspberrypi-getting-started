@@ -85,7 +85,7 @@ function connectCallback(err) {
 }
 
 // Read device connection string from command line arguments
-var iot_device_connection_string = process.argv[2];
+var iotDeviceConnectionString = process.argv[2];
 // Construct IoT Hub device client and connect to IoT Hub.
-var client = clientFromConnectionString(iot_device_connection_string);
+var client = clientFromConnectionString(iotDeviceConnectionString);
 client.open(connectCallback);

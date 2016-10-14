@@ -18,7 +18,7 @@ function initTasks(gulp) {
    */
   require('gulp-common')(gulp, 'raspberrypi-node', {
     appName: 'lesson-3',
-    config_template: {
+    configTemplate: {
       "device_host_name_or_ip_address": "[device hostname or IP adress]",
       "device_user_name": "pi",
       "device_password": "raspberry",
@@ -27,7 +27,7 @@ function initTasks(gulp) {
       "azure_storage_connection_string": "[Azure storage connection string]",
       "iot_hub_consumer_group_name": "cg1"
     },
-    config_postfix: 'raspberrypi' 
+    configPostfix: 'raspberrypi'
   });
 
   var config = gulp.config;
@@ -45,7 +45,7 @@ function initTasks(gulp) {
   })
 
   /**
-   * Override 'run' task with customized behavior 
+   * Override 'run' task with customized behavior
    */
   if (doesReadStorage) {
     gulp.task('query-table-storage', false, () => { receiveMessages(config); });

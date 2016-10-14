@@ -19,7 +19,7 @@ var readIoTHub = function (config) {
     console.log('[IoT Hub] Received message: ' + JSON.stringify(message.body) + '\n');
   };
 
-  // Only receive messages sent to IoT Hub after this time. 
+  // Only receive messages sent to IoT Hub after this time.
   var startTime = Date.now() - 10000;
 
   iotHubClient = EventHubClient.fromConnectionString(config.iot_hub_connection_string);
