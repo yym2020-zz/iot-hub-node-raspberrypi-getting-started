@@ -5,8 +5,6 @@
   "main": "gulpfile.js",
   "license": "MIT",
   "devDependencies": {
-    "expand-tilde": "^1.2.2",
-    "fs-extra": "^0.30.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1"
   }
