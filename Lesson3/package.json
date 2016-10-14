@@ -1,0 +1,17 @@
+{
+  "name": "gulp-tasks",
+  "version": "1.0.0",
+  "description": "Gulp tasks supporting sample deployment",
+  "main": "gulpfile.js",
+  "license": "MIT",
+  "devDependencies": {
+    "azure-event-hubs": "0.0.2",
+    "azure-storage": "^1.3.0",
+    "expand-tilde": "^1.2.2",
+    "get-gulp-args": "0.0.1",
+    "gulp": "^3.9.1",
+    "gulp-common": "Azure/gulp-common.git#v0.9.18",
+    "moment": "^2.15.0",
+    "run-sequence": "^1.2.2"
+  }
+}

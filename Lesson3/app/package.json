@@ -1,0 +1,12 @@
+{
+  "name": "raspberrypi-nodejs-lesson-3",
+  "version": "1.0.0",
+  "description": "nodejs code that blinks the LED connected to raspberry pi while sending messages to Azure IoT Hub",
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {
+    "azure-iot-device": "^1.0.10",
+    "azure-iot-device-amqp": "^1.0.10",
+    "wiring-pi": ">=2.1.1"
+  }
+}

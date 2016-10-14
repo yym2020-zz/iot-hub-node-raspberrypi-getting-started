@@ -1,0 +1,5 @@
+{
+  "project_folder": "./node-pi-lesson-1",
+  "start_file": "app.js",
+  "ssh_port": 22
+}
