@@ -26,8 +26,8 @@ var deviceId = getDeviceId(iot_device_connection_string);
 var CONFIG_PIN = 7;
 // Blink interval in ms
 var INTERVAL = 2000;
-// Total blink times
-var MAX_BLINK_TIMES = 20;
+// Total messages to be sent
+var MAX_MESSAGE_COUNT = 20;
 var sentMessageCount = 0;
 
 wpi.setup('wpi');
@@ -67,7 +67,7 @@ function sendMessageCallback(err) {
   // Blink once after successfully sending one message.
   blinkLED();
 
-  if (sentMessageCount < MAX_BLINK_TIMES) {
+  if (sentMessageCount < MAX_MESSAGE_COUNT) {
     setTimeout(sendMessage, INTERVAL);
   } else {
     // Wait 5 more seconds to exit so that Azure function has the chance to process sent messages.
