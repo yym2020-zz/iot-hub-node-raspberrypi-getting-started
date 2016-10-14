@@ -3,6 +3,9 @@
 */
 'use strict';
 
+/**
+ * Setup common gulp tasks: init, install-tools, deploy, run
+ */
 require('gulp-common')(require('gulp'), 'raspberrypi-node', {
   appName: 'lesson-1',
   config_template: {

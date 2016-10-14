@@ -7,6 +7,10 @@ var moment = require('moment');
 var storage = require('azure-storage');
 var stopReadAzureTable = false;
 
+/**
+ * Read messages from Azure Table.
+ * @param {object}  config - config object
+ */
 var readAzureTable = function (config) {
   var tableService = storage.createTableService(config.azure_storage_connection_string);
   var timestamp = moment.utc().format('hhmmssSSS');
@@ -48,6 +52,9 @@ var readAzureTable = function (config) {
   readNewMessages();
 }
 
+/**
+ * Set stopReadAzureTable flag to true.
+ */
 var cleanup = function () {
   stopReadAzureTable = true;
 }

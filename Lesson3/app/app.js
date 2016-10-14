@@ -5,6 +5,7 @@
 
 var wpi = require('wiring-pi');
 var Message = require('azure-iot-device').Message;
+// Use AMQP client to communicate with IoT Hub
 var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConnectionString;
 
 // Get device id from IoT device connection string
@@ -33,6 +34,11 @@ var sentMessageCount = 0;
 wpi.setup('wpi');
 wpi.pinMode(CONFIG_PIN, wpi.OUTPUT);
 
+/**
+ * Start sending messages after getting connected to IoT Hub.
+ * If there is any error, log the error message to console.
+ * @param {string}  err - connection error
+ */
 function connectCallback(err) {
   if (err) {
     console.log('[Device] Could not connect: ' + err);
@@ -43,6 +49,9 @@ function connectCallback(err) {
   }
 }
 
+/**
+ * Blink LED.
+ */
 function blinkLED() {
   // Light up LED for 100 ms
   wpi.digitalWrite(CONFIG_PIN, 1);
@@ -51,6 +60,9 @@ function blinkLED() {
   }, 100);
 }
 
+/**
+ * Construct device-to-cloud message and send it to IoT Hub.
+ */
 function sendMessage() {
   sentMessageCount++;
   var message = new Message(JSON.stringify({ deviceId: deviceId, messageId: sentMessageCount }));
@@ -58,14 +70,19 @@ function sendMessage() {
   client.sendEvent(message, sendMessageCallback);
 }
 
+/**
+ * Blink LED after message is sent out successfully, otherwise log the error message to console.
+ * If sent message count is less than max message count allowed, schedule to send another message.
+ * Else, exit process after several seconds.
+ * @param {object}  err - sending message error
+ */
 function sendMessageCallback(err) {
   if (err) {
     console.log('[Device] Message error: ' + err.toString());
-    return;
+  } else {
+    // Blink once after successfully sending one message.
+    blinkLED();
   }
-
-  // Blink once after successfully sending one message.
-  blinkLED();
 
   if (sentMessageCount < MAX_MESSAGE_COUNT) {
     setTimeout(sendMessage, INTERVAL);
@@ -77,5 +94,6 @@ function sendMessageCallback(err) {
   }
 }
 
+// Construct IoT Hub device client and connect to IoT Hub.
 var client = clientFromConnectionString(iot_device_connection_string);
 client.open(connectCallback);

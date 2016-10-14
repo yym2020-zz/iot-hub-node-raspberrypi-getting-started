@@ -14,6 +14,9 @@ wpi.setup('wpi');
 wpi.pinMode(CONFIG_PIN, wpi.OUTPUT);
 
 var blinkTimes = 0;
+/**
+ * Blink LED and log information to console.
+ */
 function blinkLED() {
   blinkTimes++;
   console.log("[Device] #" + blinkTimes + " Blink LED \n");

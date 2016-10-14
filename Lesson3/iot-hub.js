@@ -6,6 +6,10 @@
 var EventHubClient = require('azure-event-hubs').Client;
 var iotHubClient;
 
+/**
+ * Read device-to-cloud messages from IoT Hub.
+ * @param {object}  config - config object
+ */
 var readIoTHub = function (config) {
   // Listen device-to-cloud messages
   var printError = function (err) {
@@ -33,6 +37,9 @@ var readIoTHub = function (config) {
     .catch(printError);
 }
 
+/**
+ * Close connection to IoT Hub.
+ */
 var cleanup = function () {
   iotHubClient.close();
 }

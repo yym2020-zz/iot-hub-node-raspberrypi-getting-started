@@ -13,6 +13,9 @@ var cleanup = doesReadStorage ? require('./azure-table.js').cleanup : require('.
 function initTasks(gulp) {
   var runSequence = require('run-sequence').use(gulp);
 
+  /**
+   * Setup common gulp tasks: init, install-tools, deploy, run
+   */
   require('gulp-common')(gulp, 'raspberrypi-node', {
     appName: 'lesson-3',
     config_template: {
@@ -28,12 +31,22 @@ function initTasks(gulp) {
   });
 
   var config = gulp.config;
+
+  /**
+   * Gulp task to clean up resources
+   */
   gulp.task('cleanup', false, cleanup);
 
+  /**
+   * Gulp task to start device to send device-to-cloud messages
+   */
   gulp.task('send-device-to-cloud-messages', false, function () {
     runSequence('run-internal', 'cleanup');
   })
 
+  /**
+   * Override 'run' task with customized behavior 
+   */
   if (doesReadStorage) {
     gulp.task('query-table-storage', false, () => { receiveMessages(config); });
     gulp.task('run', 'Runs deployed sample on the board', ['query-table-storage', 'send-device-to-cloud-messages']);

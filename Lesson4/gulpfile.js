@@ -13,6 +13,9 @@ function initTasks(gulp) {
   var MAX_MESSAGE_COUNT = 20;
   var sentMessageCount = 0;
 
+  /**
+   * Setup common gulp tasks: init, install-tools, deploy, run
+   */
   require('gulp-common')(gulp, 'raspberrypi-node', {
     appName: 'lesson-4',
     config_template: {
@@ -27,6 +30,9 @@ function initTasks(gulp) {
 
   var config = gulp.config;
 
+  /**
+   * Gulp task to send cloud-to-device messages from host machine
+   */
   gulp.task('send-cloud-to-device-messages', false, function () {
     var Message = require('azure-iot-common').Message;
     var client = require('azure-iothub').Client.fromConnectionString(config.iot_hub_connection_string);
@@ -43,6 +49,7 @@ function initTasks(gulp) {
     };
     var targetDevice = getDeviceId(config.iot_device_connection_string);
 
+    // Build cloud-to-device message with message Id
     var buildMessage = function (messageId) {
       if (messageId < MAX_MESSAGE_COUNT) {
         return new Message(JSON.stringify({ command: 'blink', messageId: messageId }));
@@ -51,6 +58,7 @@ function initTasks(gulp) {
       }
     };
 
+    // Construct and send cloud-to-device message to IoT Hub
     var sendMessage = function () {
       sentMessageCount++;
       var message = buildMessage(sentMessageCount);
@@ -74,6 +82,7 @@ function initTasks(gulp) {
       }
     };
 
+    // Log information to console when closing connection to IoT Hub
     var closeConnectionCallback = function (err) {
       if (err) {
         console.error('[IoT Hub] Close connection error: ' + err.message + '\n');
@@ -82,6 +91,8 @@ function initTasks(gulp) {
       }
     };
 
+    // Start running this sample after getting connected to IoT Hub.
+    // If there is any error, log the error message to console.
     var connectCallback = function (err) {
       if (err) {
         console.error('[IoT Hub] Fail to connect: ' + err.message + '\n');
@@ -95,6 +106,9 @@ function initTasks(gulp) {
     client.open(connectCallback);
   });
 
+  /**
+   * Override 'run' task with customized behavior 
+   */
   gulp.task('run', 'Runs deployed sample on the board', ['run-internal', 'send-cloud-to-device-messages']);
 }
 

@@ -4,6 +4,7 @@
 'use strict';
 
 var wpi = require('wiring-pi');
+// Use AMQP client to communicate with IoT Hub
 var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConnectionString;
 
 // GPIO pin of the LED
@@ -12,6 +13,9 @@ var CONFIG_PIN = 7;
 wpi.setup('wpi');
 wpi.pinMode(CONFIG_PIN, wpi.OUTPUT);
 
+/**
+ * Blink LED.
+ */
 function blinkLED() {
   // Light up LED for 100 ms
   wpi.digitalWrite(CONFIG_PIN, 1);
@@ -21,6 +25,11 @@ function blinkLED() {
 }
 
 var stopReceivingMessage = false;
+/**
+ * Log errors to console when completing messages.
+ * If stopReceivingMessage flag is set, close connection to IoT Hub.
+ * @param {string}  err - complete message error
+ */
 function completeMessageCallback(err) {
   if (err) {
     console.log('[Device] Complete message error: ' + err.toString());
@@ -30,14 +39,22 @@ function completeMessageCallback(err) {
   }
 }
 
+/**
+ * Log information to console when closing connection to IoT Hub.
+ * @param {string}  err - close connection error
+ */
 function closeConnectionCallback(err) {
   if (err) {
     console.error('[Device] Close connection error: ' + err.message + '\n');
-    return;
+  } else {
+    console.log('[Device] Connection closed\n');
   }
-  console.log('[Device] Connection closed\n');
 }
 
+/**
+ * Process commands in received message.
+ * @param {object}  msg - received message
+ */
 function receiveMessageCallback(msg) {
   var msgBodyString = msg.getData().toString('utf-8');
   var msgBody = JSON.parse(msgBodyString);
@@ -54,6 +71,10 @@ function receiveMessageCallback(msg) {
   client.complete(msg, completeMessageCallback);
 }
 
+/**
+ * Start listening for cloud-to-device messages after getting connected to IoT Hub.
+ * @param {string}  err - connection error
+ */
 function connectCallback(err) {
   if (err) {
     console.log('[Device] Could not connect: ' + err + '\n');
@@ -65,5 +86,6 @@ function connectCallback(err) {
 
 // Read device connection string from command line arguments
 var iot_device_connection_string = process.argv[2];
+// Construct IoT Hub device client and connect to IoT Hub.
 var client = clientFromConnectionString(iot_device_connection_string);
 client.open(connectCallback);
