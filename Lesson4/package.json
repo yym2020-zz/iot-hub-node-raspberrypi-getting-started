@@ -7,8 +7,7 @@
   "devDependencies": {
     "azure-iot-common": "^1.0.15",
     "azure-iothub": "^1.0.17",
-    "expand-tilde": "^1.2.2",
     "gulp": "^3.9.1",
-    "gulp-common": "Azure/gulp-common.git#v0.9.20"
+    "gulp-common": "Azure/gulp-common.git#v0.9.21"
   }
 }
