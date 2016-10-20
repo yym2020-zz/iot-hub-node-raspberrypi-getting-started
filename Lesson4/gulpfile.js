@@ -32,6 +32,7 @@ gulp.task('send-cloud-to-device-messages', false, function () {
 
   var config = gulp.config;
   var Message = require('azure-iot-common').Message;
+  // Construct IoT Hub client
   var client = require('azure-iothub').Client.fromConnectionString(config.iot_hub_connection_string);
 
   // Get device id from IoT device connection string
@@ -100,6 +101,7 @@ gulp.task('send-cloud-to-device-messages', false, function () {
     }
   };
 
+  // Connect to IoT Hub
   client.open(connectCallback);
 });
 
