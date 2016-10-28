@@ -9,7 +9,7 @@
     "azure-storage": "^1.3.0",
     "get-gulp-args": "0.0.1",
     "gulp": "^3.9.1",
-    "gulp-common": "Azure/gulp-common.git#v0.9.22",
+    "gulp-common": "Azure/gulp-common.git#v0.9.29",
     "moment": "^2.15.0",
     "run-sequence": "^1.2.2"
   }

@@ -6,6 +6,6 @@
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-common": "Azure/gulp-common.git#v0.9.22"
+    "gulp-common": "Azure/gulp-common.git#v0.9.29"
   }
 }
