@@ -5,8 +5,7 @@ author: ZhijunZhao
 ---
 
 # Send device-to-cloud messages
-This sample repo accompanies [Lesson 3: Send device-to-cloud messages](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-node-lesson3-deploy-resource-manager-template/) lesson. It shows how to send messages from a Raspberry Pi 3
-device to Azure IoT hub. It also demonstrates how to use an Azure function app to receive incoming IoT hub messages and persist them
+This sample repo accompanies [Lesson 3: Send device-to-cloud messages](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-node-lesson3-deploy-resource-manager-template/) lesson. It shows how to send messages from a Raspberry Pi 3 device to Azure IoT hub. It also demonstrates how to use an Azure function app to receive incoming IoT hub messages and persist them
 to Azure table storage.
 
 ## Prerequisites

@@ -5,8 +5,7 @@ author: ZhijunZhao
 ---
 
 # Configure a Rapberry Pi 3 device and run a sample app on it
-This sample repo accompanies [Lesson 1: Configure your device](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-node-lesson1-configure-your-device/) lesson. It shows how to setup a Raspberry Pi 3
-device, install an OS, and deploy and run a sample application.
+This sample repo accompanies [Lesson 1: Configure your device](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-node-lesson1-configure-your-device/) lesson. It shows how to setup a Raspberry Pi 3 device, install an OS, and deploy and run a sample application.
 
 ## Repository information
 - `app` sub-folder contains the sample Node.js application that blinks the LED attached to the Pi.
