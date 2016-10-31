@@ -47,7 +47,7 @@
     "iotHubKeyResource": "[resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHubName'), variables('iotHubKeyName'))]",
     "functionAppName": "[concat(parameters('resoucePrefix'), 'functionApp')]",
     "receiveDeviceMessagesFunction": "ReceiveDeviceMessages",
-    "repoUrl": "https://github.com/Azure-Samples/iot-hub-node-raspberrypi-azure-blink",
+    "repoUrl": "https://github.com/Azure-Samples/iot-hub-node-raspberrypi-getting-started",
     "branch": "master"
   },
   "resources": [
