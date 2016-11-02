@@ -56,15 +56,20 @@ echo Handling Basic Web Site deployment.
 
 :: KuduSync
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd;devicesample;.gitignore;LICENSE.txt;readme.md;arm-template.json"
+  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd;.eslintrc;.gitignore;.travis.yml;gulpfile.js;LICENSE;README.md;Lesson1;Lesson4;"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
 
 echo Handling Function deployment.
 
-:: npm packages install
 cd "%DEPLOYMENT_TARGET%"
+
+:: copy function app files from Lesson 3, then remove Lesson 3
+robocopy /S Lesson3\ReceiveDeviceMessages .\ReceiveDeviceMessages
+rd /S /Q Lesson3
+
+:: npm packages install
 echo "Looking for Node package.json files to install..."
 FOR /F %%d in ('DIR /a:d /B') DO ( 
     echo cd %%d
