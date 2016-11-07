@@ -1,6 +1,6 @@
 ---
 services: iot-hub
-platforms: node
+platforms: Nodejs
 author: shizn
 ---
 
