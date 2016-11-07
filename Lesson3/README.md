@@ -1,6 +1,6 @@
 ---
 services: iot-hub, iot-suite
-platforms: nodejs
+platforms: Nodejs
 author: ZhijunZhao
 ---
 
@@ -18,7 +18,7 @@ See [Lesson 3: Send device-to-cloud messages](https://azure.microsoft.com/en-us/
 - `ReceiveDeviceMessages` sub-folder contains Node.js code for the Azure function.
 
 ## Running this sample
-Please follow the [Lesson 3: Send device-to-cloud messages](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-node-lesson3-deploy-resource-manager-template/) for detailed walkthough of the steps below.
+Please follow the [Lesson 3: Send device-to-cloud messages](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-node-lesson3-deploy-resource-manager-template/) for detailed walkthrough of the steps below.
 
 ### Deploy and run
 
