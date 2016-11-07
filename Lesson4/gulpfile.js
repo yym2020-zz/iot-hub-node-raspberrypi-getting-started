@@ -11,7 +11,7 @@ var gulp = require('gulp');
 require('gulp-common')(gulp, 'raspberrypi-node', {
   appName: 'lesson-4',
   configTemplate: {
-    "device_host_name_or_ip_address": "[device hostname or IP adress]",
+    "device_host_name_or_ip_address": "[device hostname or IP address]",
     "device_user_name": "pi",
     "device_password": "raspberry",
     "iot_hub_connection_string": "[IoT hub connection string]",
